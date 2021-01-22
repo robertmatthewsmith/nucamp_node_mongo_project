@@ -4,11 +4,26 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const dogRouter = require("./routes/dogRouter");
 const catRouter = require("./routes/catRouter");
 const otherRouter = require("./routes/otherRouter");
+
+const mongoose = require('mongoose');
+
+const url = 'mongodb://localhost:27017/nucampsite'
+const connect = mongoose.connect(url, {
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useNewUrlParser: true, 
+  useUnifiedTopology: true
+});
+
+connect.then(() => console.log('Connected correctly to server'), 
+  err => console.log(err)
+);
 
 var app = express();
 
@@ -27,7 +42,7 @@ app.use('/users', usersRouter);
 
 app.use('/dogs', dogRouter);
 app.use('/cats', catRouter);
-app.use('/other', otherRouter)
+app.use('/other', otherRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
